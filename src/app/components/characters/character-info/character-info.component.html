@@ -1,0 +1,46 @@
+<div class="container" *ngIf="character">
+	<div class="picture">
+		<img [src]="character.image" [alt]="character.name" />
+	</div>
+
+	<div class="description">
+		<h3 class="name">{{ character.name }}</h3>
+		<div class="field">
+			<div class="label">Status:</div>
+			<p>{{ character.status }}</p>
+		</div>
+		<div class="field">
+			<div class="label">Species:</div>
+			<p>{{ character.species }}</p>
+		</div>
+		<div class="field">
+			<div class="label">Gender:</div>
+			<p>{{ character.gender }}</p>
+		</div>
+		<div class="field">
+			<div class="label">Origin:</div>
+			<p>{{ character.origin.name }}</p>
+		</div>
+		<div class="field">
+			<div class="label">Last Location:</div>
+			<p>{{ character.location.name }}</p>
+		</div>
+	</div>
+
+	<div class="episodes-container">
+		<div class="item">
+			<div class="field">
+				<p>Episode:</p>
+				<p>Name:</p>
+				<p>Air Date:</p>
+			</div>
+		</div>
+		<div class="item" *ngFor="let episode of episodes">
+			<div class="field">
+				<p>{{ episode.episode }}</p>
+				<p>{{ episode.name }}</p>
+				<p>{{ episode.air_date }}</p>
+			</div>
+		</div>
+	</div>
+</div>

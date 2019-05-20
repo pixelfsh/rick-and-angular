@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '../../shared/models';
 import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-location-item',
@@ -9,14 +10,11 @@ import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
 })
 export class LocationItemComponent {
 
-  constructor(private service: RickAndMortyService) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   @Input() location: Location;
 
   displayCharacters() {
-    console.log('selectingLocation', this.location);
-    const residentIds = this.location.residents.map(url =>
-		url.replace("https://rickandmortyapi.com/api/character/", ""));
-    this.service.fetchCharacters(residentIds);
+    this.router.navigate([this.location.id, 'characters'], {relativeTo: this.route});
   }
 }

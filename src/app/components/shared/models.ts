@@ -1,5 +1,5 @@
 export interface Location {
-  created: Date,
+  created: string,
   dimension: string,
   id: number,
   name: string,
@@ -9,7 +9,7 @@ export interface Location {
 }
 
 export interface Character {
-  created: Date,
+  created: string,
   episode: string[],
   gender: string,
   id: number,
@@ -21,4 +21,14 @@ export interface Character {
   status: string,
   type: string,
   url: string
+}
+
+export interface Episode {
+  id: number,
+  name: string,
+  air_date: string,
+  episode: string,
+  characters: Character[],
+  url: string,
+  created: string
 }

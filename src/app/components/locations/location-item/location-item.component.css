@@ -7,7 +7,7 @@
   background-color: transparent;
   color: white;
   cursor: pointer;
-  border: 1px solid #212929;
+  border: 1px solid #444;
   height: 100px;
 }
 
@@ -29,10 +29,4 @@
 
 .label {
   font-size: 0.6em;
-}
-
-@media screen and (max-width: 768px) {
-  .item {
-    height: 100px;
-  }
 }

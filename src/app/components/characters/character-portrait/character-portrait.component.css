@@ -1,0 +1,28 @@
+.item {
+	color: #fff;
+	border-radius: 16px;
+	width: 250px;
+  position: relative;
+  cursor: pointer;
+}
+
+img {
+  border-radius: 8px;
+	max-width: 250px;
+	max-height: 100%;
+  object-fit: contain;
+}
+
+.name {
+	position: absolute;
+	bottom: 0px;
+	background-color: rgb(32, 35, 41);
+	opacity: 0.8;
+	width: 100%;
+	text-align: center;
+	padding: 0.8em 0;
+}
+
+h3 {
+	margin: 0;
+}

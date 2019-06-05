@@ -1,7 +1,7 @@
-<div class="container" *ngIf="characters.length">
+<div class="character-list">
   <app-character-portrait [character]="character" *ngFor="let character of characters"></app-character-portrait>
 </div>
 
-<div class="empty-container" *ngIf="!characters.length">
+<div class="empty-container" *ngIf="!characters">
   Invalid location or no residents found.
 </div>

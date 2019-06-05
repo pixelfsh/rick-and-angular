@@ -4,17 +4,16 @@ import { RickAndMortyService } from 'src/app/services/rick-and-morty.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-location-item',
-  templateUrl: './location-item.component.html',
-  styleUrls: ['./location-item.component.css']
+	selector: "app-location-item",
+	templateUrl: "./location-item.component.html",
+	styleUrls: ["./location-item.component.css"]
 })
 export class LocationItemComponent {
+	constructor(private router: Router, private route: ActivatedRoute, private service: RickAndMortyService) {}
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+	@Input() location: Location;
 
-  @Input() location: Location;
-
-  displayCharacters() {
-    this.router.navigate([this.location.id, 'characters'], {relativeTo: this.route});
-  }
+	displayCharactersByLocation() {
+		this.router.navigate([this.location.id, "characters"], { relativeTo: this.route });
+	}
 }

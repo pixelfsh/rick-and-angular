@@ -8,6 +8,7 @@ import { Location } from "../../shared/models";
 	styleUrls: ["./location-list.component.css"]
 })
 export class LocationListComponent implements OnInit, OnDestroy {
+
 	constructor(private service: RickAndMortyService) {}
 
 	locations: Location[] = [];
@@ -15,17 +16,8 @@ export class LocationListComponent implements OnInit, OnDestroy {
 	private locationsSubscription;
 
 	ngOnInit() {
-    this.initializeLocationData();
+		this.locations = this.service.getLocations();
     this.subscribeToLocations();
-	}
-
-	private initializeLocationData() {
-		const locations = this.service.getLocations();
-		if (locations.length) {
-			this.locations = locations;
-		} else {
-			this.service.fetchLocations();
-		}
 	}
 
 	private subscribeToLocations() {

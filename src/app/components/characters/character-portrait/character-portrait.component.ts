@@ -8,12 +8,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./character-portrait.component.css']
 })
 export class CharacterPortraitComponent {
-
   constructor(private router: Router, private route: ActivatedRoute) { }
-
+  
+  @Input() character: Character;
+  
   onSelectCharacter() {
     this.router.navigate([this.character.id], {relativeTo: this.route});
   }
-
-  @Input() character: Character;
 }

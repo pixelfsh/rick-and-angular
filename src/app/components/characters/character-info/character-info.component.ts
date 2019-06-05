@@ -14,26 +14,26 @@ export class CharacterInfoComponent implements OnInit, OnDestroy {
 	character: Character;
 	episodes: Episode[];
 
+	private locationSubscription;
 	private characterSubscription;
 	private episodeSubscription;
 
 	ngOnInit() {
     this.subscribeToCharacters();
     this.subscribeToEpisodes();
+		this.subscribeToLocations();
+	}
 
-		const characterId = +this.route.snapshot.paramMap.get("characterId");
-		const character = this.service.getCharacter(characterId);
-		if (!character) {
-			this.service.fetchCharacters([`${characterId}`]);
-			return;
-		}
-		this.character = character;
-		this.service.fetchEpisodes(this.extractEpisodeIds());
+	private subscribeToLocations() {
+		this.locationSubscription = this.service.locationSubject.subscribe(() => {
+			this.service.getCharactersBySelectedLocation();
+		});
 	}
 
 	private subscribeToCharacters() {
 		this.characterSubscription = this.service.characterSubject.subscribe(characters => {
-			this.character = characters[0];
+			const characterId = this.route.snapshot.paramMap.get("characterId");
+			this.character = characters.find(character => character.id === +characterId);
 			this.service.fetchEpisodes(this.extractEpisodeIds());
 		});
 	}
@@ -53,6 +53,7 @@ export class CharacterInfoComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+		this.locationSubscription.unsubscribe();
 		this.characterSubscription.unsubscribe();
 		this.episodeSubscription.unsubscribe();
 	}

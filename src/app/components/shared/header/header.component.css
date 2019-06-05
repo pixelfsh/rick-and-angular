@@ -1,13 +1,15 @@
-.container {
+.header-container {
   width: 100vw;
   height: 80px;
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  position: static;
+  position: fixed;
+  z-index: 1;
+  opacity: 0.95;
 }
 
-.title {
+.header-container__title {
   width: 100vw;
   height: 45px;
   display: flex;
@@ -15,20 +17,19 @@
   justify-content: center;
   align-items: center;
 }
-.title h2 {
+.header-container__title h2 {
   margin: 0; 
 }
-.title span {
+.header-container__title span {
   font-size: 0.8em;
 }
 
-.nav {
+.header-container nav {
   display: flex;
   width: 100%;
   justify-content: center;
 }
-
-button {
+.header-container nav button {
   width: 260px;
   height: 30px;
   background-color: #fff;
@@ -38,8 +39,7 @@ button {
   cursor: pointer;
   outline: none;
 }
-
-button:hover {
+.header-container nav button:hover {
   background-color: #333;
   color: white;
 }

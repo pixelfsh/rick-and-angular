@@ -1,46 +1,74 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Subject } from 'rxjs';
-import { Character, Location, Episode } from '../components/shared/models';
+import { Subject } from "rxjs";
+import { Character, Location, Episode } from "../components/shared/models";
 
 @Injectable()
 export class RickAndMortyService {
-
 	constructor(private http: HttpClient) {}
-	
+
 	locationSubject = new Subject<Location[]>();
 	characterSubject = new Subject<Character[]>();
 	episodeSubject = new Subject<Episode[] | Episode>();
-	
+
+	private shortenCharacterURLAmount = 42;
+	private selectedLocationId: number;
 	private locations: Location[] = [];
 	private characters: Character[] = [];
+
+	extractResidentIdsBySelectedLocation(): string[] {
+		return this.getSelectedLocation().residents.map(resident => resident.substr(this.shortenCharacterURLAmount));
+	}
+
+	getSelectedLocation(): Location {
+		return this.locations[this.selectedLocationId-1];
+	}
+
+	setSelectedLocationId(locationId: number) {
+		this.selectedLocationId = locationId;
+	}
 
 	getLocations(): Location[] {
 		return this.locations.slice();
 	}
 
-	getLocation(id: number): Location {
-		return this.locations.filter(location => location.id === id)[0];
+	getCharactersBySelectedLocation(): Character[] {
+		if (!this.getSelectedLocation()) {
+			return [];
+		}
+
+		const ids = this.extractResidentIdsBySelectedLocation();
+		const uncachedIds = ids.map(id => (this.characters[id] ? null : id)).filter(id => !!id);
+
+		if (uncachedIds.length === 0) {
+			return this.sliceSelectedLocationCharacters();
+		}
+
+		this.fetchCharacters(uncachedIds);
 	}
 
-	getCharacters(): Character[] {
-		return this.characters.slice();
+	sliceSelectedLocationCharacters(): Character[] {
+		const ids = this.extractResidentIdsBySelectedLocation();
+		return ids.map(id => this.characters[id]);
 	}
 
 	getCharacter(id: number): Character {
-		return this.characters.filter(character => character.id === id)[0];
+		return { ...this.characters[id] };
 	}
 
-	fetchCharacters(characterIds: string[] ) {
-		if (!characterIds.length) {
-			this.characterSubject.next([]);
-			return;
-		}
-		this.http.get(`https://rickandmortyapi.com/api/character/[${characterIds.join(',')}]`)
+	fetchCharacters(characterIds: string[]) {
+		this.http
+			.get(`https://rickandmortyapi.com/api/character/[${characterIds.join(",")}]`)
 			.subscribe((characters: Character[]) => {
-				this.characters = characters;
-				this.characterSubject.next(this.getCharacters());
+				characters.forEach(char => this.cacheCharacter(char));
+				this.characterSubject.next(this.sliceSelectedLocationCharacters());
 			});
+	}
+
+	cacheCharacter(char: Character) {
+		if (!this.characters[char.id]) {
+			this.characters[char.id] = char;
+		}
 	}
 
 	fetchLocations() {
@@ -53,8 +81,10 @@ export class RickAndMortyService {
 	}
 
 	fetchEpisodes(episodeIds: string[]) {
-		this.http.get(`https://rickandmortyapi.com/api/episode/${episodeIds.join(',')}`).subscribe((episodes: Episode[] | Episode) => {
-			this.episodeSubject.next(episodes);
-		})
+		this.http
+			.get(`https://rickandmortyapi.com/api/episode/${episodeIds.join(",")}`)
+			.subscribe((episodes: Episode[] | Episode) => {
+				this.episodeSubject.next(episodes);
+			});
 	}
 }

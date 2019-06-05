@@ -1,4 +1,4 @@
-.item {
+.location-item {
   height: 100%;
   width: 100%;
   align-items: center;
@@ -11,22 +11,22 @@
   height: 100px;
 }
 
-.item:hover {
+.location-item:hover {
   background-color: #333333;
 }
 
-.field {
+.location-item__field {
   display: flex;
   flex-direction: column;
   font-size: 0.9em;
   width: 33%;
 }
 
-.field > * {
+.location-item__field * {
   padding-left: 24px;
   margin: 0;
 }
 
-.label {
+.location-item__field__label {
   font-size: 0.6em;
 }
